@@ -1,0 +1,88 @@
+.reserveSearch{
+    height: 30px;
+    background-color: white;
+    border:3px solid #febb02;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0px;
+    border-radius: 5px;
+    position: absolute;
+    width: 100%;
+    max-width: 1024px;
+    gap: 50px;
+    margin-left: 200px;
+}
+
+.reserveSearchItem{
+    display: flex;
+    align-items: center;
+    gap:10px;
+}
+.reserveSearchInput{
+    border: none;
+    outline: none;
+}
+.reserveSearchText{
+    color:lightgray;
+
+}
+.options{
+    color: white;
+    border-radius: 5px;
+}
+.optionItem{
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+.reserveBtn{
+    background-color: #0071c2;
+    color:white;
+    font-weight: 500;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.reservationMain{
+    display: flex;
+    flex-direction: column;
+    gap:50px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1024px;
+    min-height: 10%;
+}
+
+.reservationMainLeft{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    max-width: 320px;
+    padding: 10px;
+}
+
+.reservationMainRight{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    max-width: 720px;
+    padding: 10px;
+}
+
+.styled-doctor{
+    width: 100%;
+    border: 2px solid gray;
+    background-color: white;
+}
+
+/* .styled-doctor even{
+    width: 100%;
+    border: 2px solid white;
+    background-color: gray;
+} */

@@ -1,0 +1,93 @@
+.header{
+    background-color: #105058;
+    color: white;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.headeContainter{
+    width: 100%;
+    max-width: 1024px;
+}
+.headerList{
+    display: flex;
+    gap: 50px;
+    margin: 50px 0px 50px 0px;
+}
+.headeListItem{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.headeListItem.active{
+    border: 1px solid white;
+    padding: 10px;
+    border-radius: 20px;
+}
+.headeDesc{
+    margin: 20px 0px;
+}
+.headerBtn{
+    background-color: white;
+    color:black;
+    font-weight: 500;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.headerSearch{
+    height: 30px;
+    background-color: white;
+    border:3px solid #febb02;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -25px;
+    width: 100%;
+    max-width: 1024px;
+}
+.headerSearchItem{
+    display: flex;
+    align-items: center;
+    gap:10px;
+}
+.headerSearchInput{
+    border: none;
+    outline: none;
+}
+.headerSearchText{
+    color:lightgray;
+
+}
+.date{
+    position: absolute;
+    top:50px;
+}
+.logo{
+    font-weight: bolder;
+    color: white;
+}
+.navButton{
+    margin-left: 20px;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.options{
+    color: white;
+    border-radius: 5px;
+}
+.optionItem{
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+.link {
+    color: white;
+}
