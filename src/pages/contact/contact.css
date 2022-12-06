@@ -1,0 +1,30 @@
+.contact-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 100px 0px 100px 0px;
+}
+
+p {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    gap: 1rem;
+}
+
+button, input, label {
+    padding: 0.5rem 1rem;
+    width: 200px;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+h3 {
+    text-align: left;
+}

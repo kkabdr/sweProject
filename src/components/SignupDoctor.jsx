@@ -1,10 +1,34 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import './Form.css';
-import {Link} from 'react-router-dom';
+import {Link, useFetcher} from 'react-router-dom';
 
 
-function SignupDoctor() {
+function SignupDoctor() { 
+    
+    useEffect(()=>{
+        
+        
+        fetchDepartments()
+        fetchSpecializations()
+    },[])
+    const fetchDepartments = async ()=>{
+        const rawData = await fetch("http://localhost:4000/api/data/departments/all")
+        const departments = await rawData.json()  
+        // console.log(departments)
+        if(departments.ok){
+            setAllDeps(departments.departments)
+            console.log(allDeps)
+        }
+    }
+    const fetchSpecializations = async ()=>{
+        const rawData = await fetch("http://localhost:4000/api/data/specializations/all")
+        const specializations = await rawData.json()  
+        if(specializations.ok){
+            setAllSpecs(specializations.specializations)
+        }
+    }
+    const [allSpecs,setAllSpecs] = useState()
     const [name, setName] = useState();
     const [middlename, setMidname] = useState();
     const [surname, setSurname] = useState();
@@ -15,44 +39,24 @@ function SignupDoctor() {
     const [password, setPassword] = useState();
     const [contactNumber, setContactNumber] = useState();
     const [address, setAddress] = useState();
-
-    const [department, setDepID] = useState('');
-    const [specialization, setSpec] = useState([]);
-    const [experience, setExperience] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
+    const [allDeps,setAllDeps] = useState()
+    const [department, setDepID] = useState();
+    const [specialization, setSpecID] = useState();
+    const [experience, setExperience] = useState();
+    const [startTime, setStartTime] = useState();
+    const [endTime, setEndTime] = useState();
 
     // const [selectedFile, setSelectedFile] = useState(null);
-    const [category, setCategory] = useState('');
-    const [price, setPrice] = useState('');
-    const [degree, setDegree] = useState('');
+    const [category, setCategory] = useState();
+    const [price, setPrice] = useState();
+    const [degree, setDegree] = useState();
     // const [rating, setRating] = useState('');
     const [workingdays, setWorkingDays] = useState([]);
     
     
-    function addNewSpec(){
-        let node = document.createElement("input", {name:"specialization", id:"spec", type:"text"})
-        node.classList.add("specInput")
-        node.onchange = ()=>{
-            setSpec(prev=>
-                [...prev,node.value]
-            )
-        }
-        let del = document.createElement("button")
-        del.innerHTML = "X"
-        del.onclick = ()=>{
-            console.log("triger")
-            let inp = del.parentElement.querySelector(':scope > input')
-            setSpec(specialization.filter((el)=>el!==inp.value))
-            del.parentElement.remove()
-        }
-        let p = document.createElement("p")
-        p.appendChild(node)
-        p.appendChild(del)
-        
-        let target  = document.querySelector(".spec")
-        target.appendChild(p)
-    }
+    
+
+    
     function handleWorkdays(e){
         let isChecked = e.target.checked 
         if(isChecked){
@@ -61,55 +65,44 @@ function SignupDoctor() {
             setWorkingDays(workingdays.filter(el => el !==e.target.value))
         }
     }
-    function submitSpec(){
-        const specInputs = document.querySelectorAll(".specInput")
-        for(let i = 0; i < specInputs.le; i++){
-            setSpec(prev=>[...prev, specInputs[i].innerHTML])
-        }
-    }
+    
     async function handleSubmit(){
-        submitSpec()
         console.log(specialization)
         const cookies = new Cookies()
         const token = cookies.get('token')
-        const type = 1
         const baseInfo = {
-            "role_id":"1",
-            "dateOfBirth":dateOfBirth,
+            "dateofbirth":dateOfBirth,
             "iin":iin,
             "stateID":stateID,
             "name":name,
             "surname":surname,
             "middlename":middlename,
-            "contactNumber":[contactNumber],
+            "number":contactNumber,
             "email":email,
             "address":address,
-            "password":password
-        }
-        const specificInfo = {
-            "department":department, 
-            "exprerience":experience,
+            "password":password,
+            "department_id":department, 
+            "experience":experience,
             "photo":"none",
             "category":category,
             "price":price,
+            "rating":0,
             "schedule": {
                 "workdays":workingdays,
                 "startTime":startTime,
                 "endTime":endTime
             },
-            "specialization": specialization,
+            "specialization_id": specialization,
             "degree":degree
         }
 
         const all = {
             "token":token,
-            "type":type,
-            "baseInfo":baseInfo,
-            "specificInfo":specificInfo
+            "doctor":baseInfo,
         }
         console.log(all)
         
-        const rawData = await fetch("http://localhost:4000/api/auth/signup",{
+        const rawData = await fetch("http://localhost:4000/api/auth/doctor/signup",{
             method:"POST",
             headers:{
                 "Content-Type": "application/json"
@@ -121,7 +114,7 @@ function SignupDoctor() {
         console.log(result)
     }
     return(
-        <div>
+        <div className='signup'>
             <p><h3>General Information</h3></p>
             <p><input onChange={(e)=>{setName(e.target.value)}} name="name" type="text" placeholder='enter name'/></p>
             <p><input onChange={(e)=>{setSurname(e.target.value)}} name="surname" type="text" placeholder='enter surname'/></p>
@@ -135,7 +128,15 @@ function SignupDoctor() {
             <p><input onChange={(e)=>{setPassword(e.target.value)}} name="password" type="password" placeholder='enter password'/></p>
 
             <p><h3>Specific Information</h3></p>
-            <p><input onChange={(e)=>{setDepID(e.target.value)}} name="department" type="text" placeholder='enter department'/></p>
+        
+            
+            
+            <select onChange={(e) => { setDepID(e.target.value); } }  className = "options">
+                {allDeps?.map((dep) => {return <option value={dep.id} className = "optionItem">{dep.department_name}</option>})}
+            </select>
+            <select onChange={(e) => { setSpecID(e.target.value); } }  className = "options">
+                {allSpecs?.map((spec) => {return <option value={spec.id} className = "optionItem">{spec.specialization_name}</option>})}
+            </select>
             <p><input onChange={(e)=>{setExperience(e.target.value)}} name="experience" type="number" placeholder='enter expience'/></p>
             <p>Chose category</p>
             <p>lowest<input onChange={(e)=>{setCategory(e.target.value)}} name="category" value="lowest" type="radio"/></p>
@@ -155,14 +156,10 @@ function SignupDoctor() {
             <p><input onChange={(e)=>{setStartTime(e.target.value)}} type="time" name="workingHours"/></p>
             <p>Ending </p>
             <p><input onChange={(e)=>{setEndTime(e.target.value)}} type="time" name="workingHours"/></p>
-
-            <div className='spec'>
-            </div>
-            <p><button onClick={addNewSpec}>Add Specialization</button></p>
-            <p><button onClick={handleSubmit}>Sign Up Doctor</button></p>
+            <p><button onClick={handleSubmit} className = "colorful">Sign Up Doctor</button></p>
 
             <Link to = {"/admin"}>
-                <button className = "route">Go back</button>
+                <button className = "colorful">Go back</button>
             </Link>
         </div>
     )

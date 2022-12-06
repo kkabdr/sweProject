@@ -1,3 +1,12 @@
+.main {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 50px 0 50px 0;
+}
+
 .reserveSearch{
     height: 30px;
     background-color: white;
@@ -5,31 +14,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 0px;
+    padding: 20px 0px 20px 0px;
     border-radius: 5px;
-    position: absolute;
     width: 100%;
     max-width: 1024px;
-    gap: 50px;
-    margin-left: 200px;
+    gap: 25px;
+    /* margin-left: 200px; */
 }
 
 .reserveSearchItem{
     display: flex;
     align-items: center;
-    gap:10px;
+    gap:0px;
 }
 .reserveSearchInput{
     border: none;
     outline: none;
 }
 .reserveSearchText{
-    color:lightgray;
-
+    color:white;
 }
 .options{
-    color: white;
-    border-radius: 5px;
+    color: black;
+    /* border-radius: 5px; */
+    padding: 10px;
+
 }
 .optionItem{
     width: 200px;
@@ -38,18 +47,35 @@
     margin: 10px;
 }
 .reserveBtn{
-    background-color: #0071c2;
+    background-color: #105058;
     color:white;
     font-weight: 500;
     border: none;
     padding: 10px;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+.reserveBtnLight{
+    color:black;
+    font-weight: 500;
+    border: 3px solid #105058;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    align-self: right;
+}
+.reserveBtnLight:hover{
+    color:white;
+    font-weight: 500;
+    background-color: #105058;
 }
 
 .reservationMain{
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
-    gap:50px;
+    gap: 25px;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -77,8 +103,12 @@
 
 .styled-doctor{
     width: 100%;
-    border: 2px solid gray;
+    border: 3px solid #105058;
     background-color: white;
+    margin: 0px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    border-radius: 5px;
+    max-width: 1004px;
 }
 
 /* .styled-doctor even{

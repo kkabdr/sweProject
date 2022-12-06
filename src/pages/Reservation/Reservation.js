@@ -1,69 +1,41 @@
 import "./Reservation.css"
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import Header from "../../components/header/Header";
+import Footer from "../../components/footer/Footer";
 
 //import { format } from "date-fns";
 const Reservation = () => {
-
+    useEffect(()=>{
+        
+        fetchDoctors()
+        fetchDepartments()
+        fetchSpecializations()
+    },[])
+    const fetchDepartments = async ()=>{
+        const rawData = await fetch("http://localhost:4000/api/data/departments/all")
+        const departments = await rawData.json()  
+        // console.log(departments)
+        if(departments.ok){
+            setAllDeps(departments.departments)
+            console.log(allDeps)
+        }
+    }
+    const fetchSpecializations = async ()=>{
+        const rawData = await fetch("http://localhost:4000/api/data/specializations/all")
+        const specializations = await rawData.json()  
+        if(specializations.ok){
+            setAllSpecs(specializations.specializations)
+        }
+    }
     const [data, setData] = useState([]);
     const [doctor_name, setDoctorName] = useState("");
-    const [department, setDepartment] = useState("");
-    const [specialize, setSpecialize] = useState("");
+    const [department, setDepID] = useState("");
+    const [specialization, setSpecID] = useState("");
     const [search, setSearch] = useState(false);
-
-    const loadData = async () => {
-
-        if(!doctor_name && !department && !specialize){
-            const response = await axios.get(`http://10.101.40.93:4000/api/data/doctors/all`);//(`http://localhost:4000/api/get`);
-            setData(response.data);
-            setSearch(false);
-        }
-        if(!doctor_name && !department && specialize){
-            const response = await axios.get(``);//(`http://localhost:4000/api/get/${specialize}`);
-            setData(response.data);
-            setSearch(false);
-        }
-
-        else if(!doctor_name && department && !specialize){
-            const response = await axios.get(``);//(`http://localhost:4000/api/get/${department}`);
-            setData(response.data);
-            setSearch(false);
-        }
-
-        else if(doctor_name && !department && !specialize){
-            const response = await axios.get(``);//(`http://localhost:4000/api/get/${doctor_name}`);
-            setData(response.data);
-            setSearch(false);
-        }
-
-        else if(doctor_name && !department && specialize){
-            const response = await axios.get(``);//(`http://localhost:4000/api/get/${doctor_name}/${specialize}`);
-            setData(response.data);
-            setSearch(false);
-        }
-
-        else if(!doctor_name && department && specialize){
-            const response = await axios.get(``);//(`http://localhost:4000/api/get/${department}/${specialize}`);
-            setData(response.data); 
-            setSearch(false);
-        }
-
-        else if(doctor_name && department && !specialize){
-            const response = await axios.get(``);//(`http://localhost:4000/api/get/${doctor_name}/${department}`);
-            setData(response.data);
-            setSearch(false);
-        }
-
-        else if(doctor_name && department && specialize){
-            const response = await axios.get(``);//(`http://localhost:4000/api/get/${doctor_name}/${department}/${specialize}`);
-            setData(response.data);
-            setSearch(false);
-        }
-        
-    }
-
-    loadData();
+    const [allDeps,setAllDeps] = useState()
+    const [allSpecs,setAllSpecs] = useState()
 
     // const ViewDoctor = (doctor) => {
     //     return(
@@ -73,89 +45,70 @@ const Reservation = () => {
     //     )
     // }
 
-    const handleDoctors = () =>{
-        return(
-            <div className="styled-div" style={{
-                display: search === true ? '' : 'none',
-            }}>
-                {data.map((item) => {
+    const fetchDoctors = async() =>{
+        const rawData = await fetch("http://localhost:4000/api/data/doctors/search/?department_id=" +department + "&name=" +doctor_name +"&specialization_id=" +specialization)
+        const data = await rawData.json()
+        if(data.ok){
+            console.log(data.doctors)
+            const myNode = document.getElementsByClassName("reservationMain");
+            myNode.innerHTML = '';
+            setData(data.doctors)
+        }
+
+    }
+
+
+    return (
+            <>
+            <Header />
+            <div className="main">
+                <div className="reserveSearch">
+                    <div className = "reserveSearchItem">
+                        
+                        {/* <label>Doctor's name</label> */}
+                        <input type = "text" placeholder="Type doctor's name" className = "headerSearchInputItem" onChange = {(e) => {setDoctorName(e.target.value);}} value = {doctor_name}></input>
+                    </div>
+
+                    <div className = "reserveSearchItem">
+                        <select onChange={(e) => { setDepID(e.target.value); } }  className = "options">
+                            <option value="" className = "optionItem">Select Department</option>
+                            {allDeps?.map((dep) => {return <option value={dep.id} className = "optionItem">{dep.department_name}</option>})}
+                        </select>
+                    </div>
+                    <div className = "reserveSearchItem">
+
+                        <select onChange={(e) => { setSpecID(e.target.value); } }  className = "options">
+                            <option value="" className = "optionItem">Select Specialization</option>
+                            {allSpecs?.map((spec) => {return <option value={spec.id} className = "optionItem">{spec.specialization_name}</option>})}
+                        </select>
+                    </div>
+
+                    <div className = "reserveSearchItem">
+                        <button className = "reserveBtn" onClick = {fetchDoctors}>Search</button>   
+                    </div>
+                </div>
+
+                <div className = "reservationMain">                     
+                    {data?.map((item) => {
                     return (
+                        
                         <div className = "styled-doctor"> 
                             <h1 className = "styled-h1">{item.name} {item.surname}</h1>
-                            <h2 className = "styled-h2">{department}</h2>
-                            <h2 className = "styled-h2">{specialize}</h2>
+                            <h2 className = "styled-h2">{item.department_name}</h2>
+                            <h2 className = "styled-h2">{item.specialization_name}</h2>
                             <Link to="/">
-                                    <button className="btn btn-appoint">Appoint</button>
+                                    <button className="colorful">Appoint</button>
                             </Link>
                             {/* <button className="btn btn-view" onClick={() => ViewDoctor(item)}>View</button> */}
                         </div>
                     );
                 })}
-        </div> 
-        )
-    }
 
-    return (
-            <div><div className="reserveSearch">
-                    <div className = "reserveSearchItem">
-                        <label>Doctor's name</label>
-                        <input type = "text" placeholder="Type doctor's name" className = "headerSearchInputItem" onChange = {(e) => {setDoctorName(e.target.value);}} value = {doctor_name}></input>
-                    </div>
+                </div> 
 
-                    <div className = "reserveSearchItem">
-                        <button className = "reserveBtn" onClick = {()=>setSearch(true)}>Search</button>   
-                    </div>
             </div>
-            <div className = "reservationMain">
-                        <div className = "reservationMainLeft">
-                            <div className = "reserveSearchItem">
-                            <label>Department's name</label>
-                                <select onChange={(e) => { setDepartment(e.target.value); } } value={department} className = "options">
-                                    <option value="" className = "optionItem">Department's name</option>
-                                    <option value="medicine" className = "optionItem">Medicine</option>
-                                    <option value="surgery" className = "optionItem">Surgery</option>
-                                    <option value="gynecology" className = "optionItem">Gynecology</option>
-                                    <option value="obstretrics" className = "optionItem">Obstretrics</option>
-                                    <option value="pediatrics" className = "optionItem">Pediatrics</option>
-                                    <option value="radiology" className = "optionItem" >Radiology</option>
-                                    <option value="eye" className = "optionItem">Eye</option>
-                                    <option value="ent" className = "optionItem">ENT</option>
-                                    <option value="dental" className = "optionItem">Dental</option>
-                                    <option value="orthopedics" className = "optionItem">Orthopedics</option>
-                                    <option value="neurology" className = "optionItem">Neurology</option>
-                                    <option value="cardiology" className = "optionItem">Cardiology</option>
-                                    <option value="psychiatry" className = "optionItem">Psychiatry</option>
-                                    <option value="skin" className = "optionItem">Skin</option>
-                                </select>
-                        </div>
-
-                        <div className = "reserveSearchItem">
-                            <label>Specialize's name</label>
-                                <select onChange={(e) => { setSpecialize(e.target.value); } } value={specialize} className = "options">
-                                    <option value="" className = "optionItem">Specialization</option>
-                                </select>
-                        </div>
-
-                        <div className = "reserveSearchItem">
-                            <button className = "reserveBtn" onClick    = {()=>setSearch(true)}>Search</button>   
-                        </div>
-                        </div>
-                            
-                        <div className="reservationMainRight"> 
-                                <div className = "styled-doctor"> 
-                                <h1 className = "styled-h1">Temirlan Nurmakhan</h1>
-                                <h2 className = "styled-h2">ENT</h2>
-                                <h2 className = "styled-h2">Doctor</h2>
-                                <Link to="/">
-                                        <button className="btn btn-appoint">Appoint</button>
-                                </Link>
-                                {/* <button className="btn btn-view" onClick={() => ViewDoctor(1)}>View</button>  */}
-                            </div>
-                        </div> 
-
-                    {handleDoctors()}
-            </div>
-            </div>
+            <Footer />
+            </>
     )
 }
 export default Reservation

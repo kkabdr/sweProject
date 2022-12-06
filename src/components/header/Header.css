@@ -5,8 +5,9 @@
     justify-content: center;
     position: relative;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0 0 50px 0;
 }
-.headeContainter{
+.headerContainter{
     width: 100%;
     max-width: 1024px;
 }
@@ -90,4 +91,5 @@
 }
 .link {
     color: white;
+    
 }

@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import Cookies from 'universal-cookie'
 import {Link} from 'react-router-dom';
-import Header from '../components/header/Header';
+import Header from './header/Header';
+import Footer from './footer/Footer';
+import "./Form.css";
 
 
 
@@ -182,28 +184,29 @@ function AdminAllDoctor(){
     };
 
     return(
+        <>
+        <Header />
         <div>
-            <>
-            <Header />
-            </>
-            <p><button onClick={fetchDoctors()}>Show all doctors</button></p>
+            <div className='admin'>
+            <p><button onClick={fetchDoctors()}className = "colorful">Show all doctors</button></p>
             <p><input onChange={(e)=>{setID(e.target.value)}} name="name" type="text" placeholder='enter Doctor ID'/></p>
-            <p><button onClick={fetchDoctorByID(ID)}>Find the Doctor</button></p>
-            <p><button onClick={updateDoctorByID(ID)}>Update the Doctor</button></p>
-            <p><button onClick={deleteDoctorByID(ID)}>Delete the Doctor</button></p>
+            <p>
+                <button onClick={fetchDoctorByID(ID)} className = "colorful">Find the Doctor</button>
+                <button onClick={updateDoctorByID(ID)} className = "colorful">Update the Doctor</button>
+                <button onClick={deleteDoctorByID(ID)} className = "colorful">Delete the Doctor</button>
+            </p>
 
+            <p>
             <Link to = {"/admin/signupdoctor"}>
-                <button className = "route">Create Doctor</button>
+                <button className = "colorful">Create Doctor</button>
             </Link>
-
             <Link to = {"/admin/signuppatient"}>
-                <button className = "route">Create Patient</button>
+                <button className = "colorful">Create Patient</button>
             </Link>
-
             <Link to = {"/"}>
-                <button className = "route">Login</button>
+                <button className = "colorful">Logout</button>
             </Link>
-
+            </p>
             {/* <p><input onChange={(e)=>{setName(e.target.value)}} name="name" type="text" placeholder='enter name'/></p>
             <p><input onChange={(e)=>{setSurname(e.target.value)}} name="surname" type="text" placeholder='enter surname'/></p>
             <p><input onChange={(e)=>{setMidname(e.target.value)}} name="middlename" type="text" placeholder='enter middlename'/></p>
@@ -237,7 +240,11 @@ function AdminAllDoctor(){
             </div>
             <p><button onClick={addNewSpec}>Add Specialization</button></p>
             <button onClick={handleSubmit}>Sign Up Doctor</button> */}
+            </div>
         </div>
+        
+        <Footer />
+        </>
     )
 }
 

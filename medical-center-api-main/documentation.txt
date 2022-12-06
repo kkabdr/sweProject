@@ -1,0 +1,627 @@
+Authorization 
+    POST:api/auth/admin/signin
+    POST:api/auth/patient/signin
+    POST:api/auth/doctor/signin
+        {
+            email:
+            password:
+        }
+        return
+        success
+        {
+            ok:true
+            token:
+        }
+        faliure
+        {
+            ok:false
+        }
+Registration
+    POST:api/auth/admin/signup
+        {
+            token:
+            regisration:{
+                name:
+                surname:
+                email:
+                number:
+                password:
+            }
+        }
+        return 
+        succesfull{
+            ok:true
+            result:
+        }
+        faliure{
+            ok:false
+            message:
+        }
+    POST:api/auth/patient/signup
+        {
+            "patient": {
+                "dateofbirth":"2022-09-10",
+                "iin":"101010303030",
+                "stateID":"713141441",
+                "name":"Patient1",
+                "surname":"Patient1",
+                "middlename":"Yerdaulet",
+                "number":"87781631245",
+                "email":"patient1@mail.ru",
+                "address":"32 Tauelsizdik avenue",
+                "password":"test_pass",
+                "blood_group":"O",
+                "emergency_contact": "87781944602",
+                "martial_status": "single",
+                "other":"other"
+            }
+        }
+        succesfull:
+        {
+            ok:true
+            message
+        }
+        failure{
+            ok:false
+            message
+        }
+    POST:api/auth/doctor/signin
+        {
+            token:
+            "doctor": {
+                "dateOfBirth":"2022-09-10",
+                "iin":"101010303030",
+                "stateID":"713141441",
+                "name":"new req",
+                "surname":"new surnmae",
+                "middlename":"Yerdaulet",
+                "contactNumber":"87781631245",
+                "email":"doctor@mail.ru",
+                "address":"32 Tauelsizdik avenue",
+                "password":"test_pass",
+                "department":4, 
+                "exprerience":5,
+                "photo":"none",
+                "category":"highest",
+                "price":10000,
+                "schedule": {
+                    "workdays":["Monday","Saturday"],
+                    "startTime":"12:30:00",
+                    "endTime":"17:30:00"
+                },
+                "specialization_id": 2,
+                "degree":"phd in NU"
+            }
+        }
+         succesfull:
+        {
+            ok:true
+            message
+        }
+        failure{
+            ok:false
+            message
+        }
+
+
+DOCTOR:
+    to get all doctors
+    GET api/data/doctors/all
+        succesfull
+        {
+           ok:true
+            doctors:[
+                "name": "Doctor1",
+                "surname": "Doctor1",
+                "number": "87781631245",
+                "specialization_name": "pediatrics",
+                "department_name": "cardiology"
+            ]
+        }
+        failure
+        {
+            ok:false
+            message:
+        }
+    to get doctor by id
+
+    GET api/data/doctor/id
+        succesfull
+        {
+            ok:true
+            doctor:{
+                "id": 9,
+                "dateofbirth": "2022-09-09T18:00:00.000Z",
+                "iin": "101010303030",
+                "name": "Doctor4",
+                "surname": "Doctor4",
+                "middlename": "Yerdaulet",
+                "address": "32 Tauelsizdik avenue",
+                "email": "doctor4@mail.ru",
+                "number": "87781631245",
+                "department_name": "skin",
+                "specialization_name": "radiology",
+                "experience": 9,
+                "category": "highest",
+                "price": 10000,
+                "degree": "phd in NU",
+                "rating": 0
+            }
+        }
+        failure
+        {
+            ok:false
+            message
+        }
+
+    to get doctor's appointments
+
+    GET api/data/appointments/doctor/id
+        succesfull
+        {
+            ok:true
+            appointments:[
+                {
+                   "id": 2,
+                    "patient_name": "Patient1",
+                    "patient_surname": "Patient1",
+                    "appointment_date": "2022-12-06T18:00:00.000Z",
+                    "appointment_time_from": "14:22:00",
+                    "appointment_time_to": "17:10:00",
+                    "visited": 0 
+                }
+            ]
+        }
+        failure
+        {
+            ok:false
+            message
+        }
+
+        to get doctor via filter
+
+        GET: /api/data/doctors/search/?department_id&name&specialization_id
+            succeess
+            {
+                ok:true
+                doctor:[
+                    {
+                        "id": 6,
+                        "name": "Doctor1",
+                        "surname": "Doctor1",
+                        "specialization_name": "pediatrics",
+                        "department_name": "cardiology"
+                    }
+                ]
+                   
+                }
+            }
+        
+    to update doctor by id
+
+    PUT api/data/doctor/id
+        body
+        {
+            token:
+            doctor:{
+                "dateofbirth": "2022-09-09T18:00:00.000Z",
+                "iin": "101010303030",
+                "name": "Doctor4",
+                "surname": "Doctor4",
+                "middlename": "Yerdaulet",
+                "address": "32 Tauelsizdik avenue",
+                "email": "doctor4@mail.ru",
+                "number": "87781631245",
+                "department_id": 9,
+                "specialization_id": 4,
+                "experience": 9,
+                "category": "highest",
+                "price": 10000,
+                "degree": "phd in NU",
+                "rating": 0
+            }
+        }
+        return
+        succeess
+        {
+            ok:true
+            message:updated
+        }
+        failure
+        {
+            ok:false
+            message
+        }
+    to delete doctor by id 
+    DELETE /api/data/doctor/id
+    return
+    succesfull{
+        ok:true
+        message:deleted
+    }
+    failure{
+        ok:false
+        message
+    }
+    PATIENT
+
+    to get all patients
+    GET api/data/patients/all
+    return
+    succeess{
+        "ok": true,
+        "patients": [
+          {
+            "id": 2,
+            "dateofbirth": "2022-09-09T18:00:00.000Z",
+            "iin": "101010303030",
+            "name": "Patient1",
+            "surname": "Patient1",
+            "middlename": "Alik",
+            "address": "32 Tauelsizdik avenue",
+            "email": "patient1@mail.ru",
+            "number": "87781631245",
+            "blood_group": "O",
+            "emergency_contact": "87781944602",
+            "martial_status": null,
+            "other": "other"
+          }
+        ]
+    }
+    failure{
+        ok:false,
+        message
+    }
+
+
+    to get patient's appointments
+
+    GET api/data/appointments/patient/id
+    return
+    succeess
+    {
+        "ok": true,
+        "doctors": [
+            "id": 2,
+            "doctor_name": "Doctor4",
+            "doctor_surname": "Doctor4",
+            "specialization_name": "radiology",
+            "department_name": "skin",
+            "appointment_date": "2022-12-06T18:00:00.000Z",
+            "appointment_time_from": "14:22:00",
+            "appointment_time_to": "17:10:00",
+            "visited": 0
+          },
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    to get patient by id
+    GET /api/data/patient/id
+    
+    return
+    succeess
+    {
+        "ok": true,
+        "patient": {
+          "id": 2,
+          "dateofbirth": "2022-09-09T18:00:00.000Z",
+          "iin": "101010303030",
+          "name": "Patient1",
+          "surname": "Patient1",
+          "middlename": "Alik",
+          "address": "32 Tauelsizdik avenue",
+          "email": "patient1@mail.ru",
+          "number": "87781631245",
+          "blood_group": "O",
+          "emergency_contact": "87781944602",
+          "martial_status": null,
+          "other": "other"
+        }
+    }
+
+    to update patient by id
+
+    PUT:
+    {
+        patient:{
+            "dateofbirth":"2022-09-10",
+                "iin":"101010303030",
+                "stateID":"713141441",
+                "name":"Patient1",
+                "surname":"Patient1",
+                "middlename":"Yerdaulet",
+                "number":"87781631245",
+                "email":"patient1@mail.ru",
+                "address":"32 Tauelsizdik avenue",
+                "password":"test_pass",
+                "blood_group":"O",
+                "emergency_contact": "87781944602",
+                "martial_status": "single",
+                "other":"other"
+        }
+    }
+    return
+    succesfull
+    {
+        ok:true
+        message: updated
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    to delete patient by id 
+    DELETE: /api/data/patient/id 
+    
+    result
+    succeess
+    {
+        ok: true
+        message:deleted
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    APPOINTMENTS
+
+    to make appointment
+    {
+        appointment:{
+            "patient_id":2,
+            "doctor_id":8,
+            "appointment_date":"2022-12-07",
+            "appointment_time_from":"14:22",
+            "appointment_time_to":"17:10",
+            "other":"new other info"
+        }
+    }
+    return
+    succeess
+    {
+        ok:true
+        message
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    to get appointment by id
+
+    GET /data/appointment/id
+    return
+    succeess{
+        ok:true
+        appointment:{
+            "id": 2,
+            "patient_name": "Patient1",
+            "patient_surname": "Patient1",
+            "doctor_name": "Doctor4",
+            "doctor_surname": "Doctor4",
+            "appointment_date": "2022-12-06T18:00:00.000Z",
+            "appointment_time_from": "14:22:00",
+            "appointment_time_to": "17:10:00",
+            "other": "new other info",
+            "visited": 0
+        }
+    }
+    PUT /api/data/appointment/id 
+    {
+        "appointment":{
+            "patient_id":2,
+            "doctor_id":8,
+            "appointment_date":"2022-12-07",
+            "appointment_time_from":"14:22",
+            "appointment_time_to":"17:10",
+            "other":"new other info",
+            "visited":1
+        }
+    }
+    return
+    succeess
+    {
+        ok:true
+        message:updated
+    }
+    failure
+    {
+        ok:false
+        message:
+    }
+
+    to delete appointment by id 
+
+    DELETE api/data/appointment/id 
+
+    return
+    succeess
+    {
+        ok:true
+        message:deleted
+    }
+    failure
+    {
+        ok:false
+        message:
+    }
+
+    DEPARTMENT 
+    
+    add new department
+    
+    POST /api/data/department
+
+    {
+        department_name:name
+    }
+
+    return
+    succeess
+    {
+        ok:true
+        message
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    get department by id 
+
+    GET /api/data/department/id 
+
+    succeess
+    {
+        ok:true
+        department:{
+            id,
+            department_name
+        }
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    to get all departments
+
+    GET /api/data/departments/all
+    return
+    succeess
+    {
+        ok:true
+        departments:[]
+    }
+    failure
+    {
+        ok:false
+        message:
+    }
+
+    update department name 
+    PUT /api/data/department/id 
+    {
+        department_name:
+    }  
+
+    succeess
+    {
+        ok:true
+        message:updated
+    }
+    failure
+    {
+        ok:false
+        message:
+    }
+
+     delete department name 
+    DELETE /api/data/department/id 
+    succeess
+    {
+        ok:true
+        message:deleted
+    }
+    failure
+    {
+        ok:false
+        message:
+    }
+
+
+    DEPARTMENT 
+    
+    add new department
+    
+    POST /api/data/specialization
+
+    {
+        specialization_name:name
+    }
+
+    return
+    succeess
+    {
+        ok:true
+        message
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    get specialization by id 
+
+    GET /api/data/specialization/id 
+
+    succeess
+    {
+        ok:true
+        
+            id,
+            specialization_name
+        
+    }
+    failure
+    {
+        ok:false
+        message
+    }
+
+    to get all specializations
+
+    GET /api/data/specializations/all
+    return
+    succeess
+    {
+        ok:true
+        specialization:[]
+    }
+    failure
+    {
+        ok:false
+        message:
+    }
+
+    update specialization name 
+    PUT /api/data/specialization/id 
+    {
+        specialization_name:
+    }  
+
+    succeess
+    {
+        ok:true
+        message:updated
+    }
+    failure
+    {
+        ok:false
+        message:
+    }
+
+     delete specialization name 
+    DELETE /api/data/specialization/id 
+    succeess
+    {
+        ok:true
+        message:deleted
+    }
+    failure
+    {
+        ok:false
+        message:
+    }

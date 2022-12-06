@@ -59,9 +59,7 @@ function SignupPatient() {
         console.log(emContact)
         const cookies = new Cookies()
         const token = cookies.get('token')
-        const type = 3
         const baseInfo = {
-            "role_id":"3",
             "dateOfBirth":dateOfBirth,
             "iin":iin,
             "stateID":stateID,
@@ -71,9 +69,7 @@ function SignupPatient() {
             "contactNumber":[contactNumber],
             "email":email,
             "address":address,
-            "password":password
-        }
-        const specificInfo = {
+            "password":password,
             "bloodGroup":bloodGroup,
             "maritalStatus":maritalStatus,
             "emergencyContact":emContact,
@@ -82,13 +78,11 @@ function SignupPatient() {
 
         const all = {
             "token":token,
-            "type":type,
-            "baseInfo":baseInfo,
-            "specificInfo":specificInfo
+            "patient":baseInfo,
         }
         console.log(all)
         
-        const rawData = await fetch("http://localhost:4000/api/auth/signup",{
+        const rawData = await fetch("http://localhost:4000/api/auth/patient/signup",{
             method:"POST",
             headers:{
                 "Content-Type": "application/json"
@@ -100,7 +94,7 @@ function SignupPatient() {
         console.log(result)
     }
     return(
-        <div>
+        <div className='signup'>
             <p><h3>General Information</h3></p>
             <p><input onChange={(e)=>{setName(e.target.value)}} name="name" type="text" placeholder='enter name'/></p>
             <p><input onChange={(e)=>{setSurname(e.target.value)}} name="surname" type="text" placeholder='enter surname'/></p>
@@ -115,18 +109,19 @@ function SignupPatient() {
             
             <p><h3>Specific Information</h3></p>
             <div className='emcontact'>
-                <p><button onClick={addNewEmContact}>Add Contact Number</button></p>
+                <p><button onClick={addNewEmContact} className = "colorful">Add Contact Number</button></p>
             </div>
             <p>Chose marital status</p>
             <p>single<input onChange={(e)=>{setMartialStatus(e.target.value)}} name="maritalStatus" value="single" type="radio"/></p>
             <p>married<input onChange={(e)=>{setMartialStatus(e.target.value)}} name="maritalStatus" value="married" type="radio"/></p>
             <p><input onChange={(e)=>{setBlood(e.target.value)}} name="blood" type="text" placeholder='enter blood  type'/></p>
             <p><input onChange={(e)=>{setOtherInfo(e.target.value)}} name="other" type="text" placeholder='enter other info'/></p>
-            <button onClick={handleSubmit}>Sign Up </button>
+            <p><button onClick={handleSubmit} className = "colorful">Sign Up </button></p>
 
             <Link to = {"/admin"}>
-                <button className = "route">Go back</button>
+                <button className = "colorful">Go back</button>
             </Link>
+            
         </div>
     )
 
