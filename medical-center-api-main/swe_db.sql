@@ -37,6 +37,7 @@ CREATE TABLE doctor (
     price integer NOT NULL,
     degree character varying(255) NOT NULL,
     rating integer NOT NULL Default 0,
+    state_id text,
 
     FOREIGN KEY (specialization_id) REFERENCES specialization(id),
     FOREIGN KEY (department_id) REFERENCES department(id)
@@ -58,6 +59,7 @@ CREATE TABLE patient (
     blood_group character varying(255),
     emergency_contact character varying(255),
     martial_status character varying(255),
+    state_id text,
     other character varying(255)
 );
 

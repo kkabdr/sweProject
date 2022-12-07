@@ -28,6 +28,7 @@ function SignupDoctor() {
             setAllSpecs(specializations.specializations)
         }
     }
+    const [allDeps,setAllDeps] = useState()
     const [allSpecs,setAllSpecs] = useState()
     const [name, setName] = useState();
     const [middlename, setMidname] = useState();
@@ -39,7 +40,6 @@ function SignupDoctor() {
     const [password, setPassword] = useState();
     const [contactNumber, setContactNumber] = useState();
     const [address, setAddress] = useState();
-    const [allDeps,setAllDeps] = useState()
     const [department, setDepID] = useState();
     const [specialization, setSpecID] = useState();
     const [experience, setExperience] = useState();

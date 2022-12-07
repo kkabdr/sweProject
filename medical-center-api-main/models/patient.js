@@ -1,6 +1,8 @@
 const pool = require("./db _setup")
 const bcrypt = require("bcrypt")
 const salt = 10
+
+
 const getAllPatient = (callback)=>{
     pool.query(`SELECT id,dateofbirth,
     iin,
@@ -13,7 +15,8 @@ const getAllPatient = (callback)=>{
     blood_group,
     emergency_contact,
     martial_status,
-    other
+    other,
+    state_id
     from patient
     `,(err,result)=>{
         if(err){
@@ -28,7 +31,7 @@ const getAllPatient = (callback)=>{
     })
 }
 const getPatientWithFilter = (filter,callback)=>{
-    pool.query(`select id, name, surname,dataofbirth, blood_group, number,
+    pool.query(`select id, name, surname,dateofbirth, blood_group, number,state_id
     from patient 
     where (
         ((lower(name) Like lower($1)))
@@ -68,8 +71,10 @@ const addPatient =  (data,callback) =>{
                 blood_group,
                 emergency_contact,
                 martial_status,
-                other)
-                        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING * `, 
+                other,
+                state_id
+                )
+                        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING * `, 
                         [   data.dateofbirth,
                             data.iin,
                             data.name,
@@ -82,7 +87,9 @@ const addPatient =  (data,callback) =>{
                             data.blood_group,
                             data.emergency_contact,
                             data.marital_status,
-                            data.other],(err,result)=>{
+                            data.other,
+                            state_id
+                        ],(err,result)=>{
                                 if(err){
                                     console.log("Add Admin",err)
                                     callback(true,err)
@@ -121,7 +128,8 @@ const getPatientByID = (id, callback) =>{
     blood_group,
     emergency_contact,
     martial_status,
-    other
+    other,
+    state_id
      FROM patient WHERE id = $1`, [id],(err,result)=>{
         if(err){
             callback(true,err)
@@ -156,6 +164,7 @@ function updatePatient(id, data, callback){
             emergency_contact = $11,
             martial_status = $12,
             other= $13
+            state_id = $15
 
             Where id = $14`
             ,[data.dateofbirth,
@@ -170,8 +179,9 @@ function updatePatient(id, data, callback){
                 data.blood_group,
                 data.emergency_contact,
                 data.martial_status,
-                data.other,id], (err, result)=>{
+                data.other,id,data.state_id], (err, result)=>{
                     if(err){
+                        console.log(err)
                         callback(true,err)
                     }else{
                         callback(false, result.rows)

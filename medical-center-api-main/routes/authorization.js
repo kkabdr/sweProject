@@ -30,11 +30,13 @@ router.post("/admin/signup", (req,res)=>{
 router.post("/admin/signin/",(req,res)=>{
     let credentials = req.body.credentials
     console.log(credentials.email)
+    console.log(req.body)
     getAdminByEmail(credentials.email, (err,result)=>{
         if(err){
             console.log(err)
             res.status(404).json({"ok":false,"message":"Credentials error"})
         }else{
+            console.log(result)
             bcrypt.compare(credentials.password, result.password, (err1, result1)=>{
                 if(err1){
                     console.log(err1)
@@ -44,7 +46,7 @@ router.post("/admin/signin/",(req,res)=>{
                     if(result1){
                         const token = jwt.sign({"role":"admin", "id":result.admin_id},"secret",{expiresIn:"24h",})
                     console.log("Authorized ADMIN")
-                    res.status(200).json({ok:true, token:token})
+                    res.status(200).json({ok:true, token:token,"id":result.id,role:"admin" })
                     }else{
                         res.status(404).json({"ok":false,"message":"Credentials error"})
                     }
@@ -95,7 +97,7 @@ router.post("/doctor/signin/",(req,res)=>{
                         const token = jwt.sign({"role":"doctor",
                         id:result.id},"secret",{expiresIn:"24h"})
                         console.log("Authorized Doctor")
-                        res.status(200).json({ok:true, token:token})
+                        res.status(200).json({ok:true, token:token,id:result.id,role:'doctor'})
                     }else{
                         res.status(404).json({"ok":false,"message":"Credentials error"})
 
@@ -143,7 +145,7 @@ router.post("/patient/signin/",(req,res)=>{
                         const token = jwt.sign({"role":"patient",
                         id:result.id},"secret",{expiresIn:"24h"})
                         console.log("Authorized Doctor")
-                        res.status(200).json({ok:true, token:token})
+                        res.status(200).json({ok:true, token:token,id:result,role:'patient'})
                     }else{
                         res.status(404).json({"ok":false,"message":"Credentials error"})
 

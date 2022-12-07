@@ -4,7 +4,7 @@ const router  = express.Router()
 // const {deleteAdmin,addAdmin,getAdminByEmail} = require("../models/admin")
 const auth = require("./middleware")
 const bcrypt = require("bcrypt")
-const { deletePatient, getAllPatient, getPatientByID, updatePatient } = require('../models/patient')
+const { deletePatient, getAllPatient, getPatientByID, updatePatient, getPatientWithFilter } = require('../models/patient')
 const { getAllAppointmentsOfPatient } = require('../models/appointment')
 
 router.get("/data/patients/all",auth,(req,res)=>{
@@ -16,7 +16,7 @@ router.get("/data/patients/all",auth,(req,res)=>{
         console.log(result)
         if(err){
             if(result.message === "Not found" ){
-                res.status(404).json({ok:false, message:"Not Found"})
+                res.status(200).json({ok:false, "patients":[]})
             }else{
                 res.status(500).json({ok:false, message:"internal erver error"})
             }
@@ -25,6 +25,25 @@ router.get("/data/patients/all",auth,(req,res)=>{
             res.status(200).json({"ok":true, "patients":result})
         }
     }))
+})
+
+router.get("/data/patients/",auth,(req,res)=>{
+    let name = req.query.name
+    let filter = {
+        "name":name
+    }
+    console.log(filter)
+    getPatientWithFilter(filter,(err,result)=>{
+        if(err){
+            if(result === 'not found'){
+                res.status(200).json({"ok":true, "patients":[]})    
+            }else{
+                res.status(404).json({"ok":false, "message":"not found"})
+            }
+        }else{
+            res.status(200).json({"ok":true, "patients":result})    
+        }
+    })
 })
 
 router.get("/data/patient/:id",auth,(req,res)=>{

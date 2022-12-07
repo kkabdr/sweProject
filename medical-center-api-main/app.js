@@ -8,7 +8,7 @@ app.use(bodyParser.json())
 
 app.use(cors())
 app.use("/api/auth/", require("./routes/authorization"))
-app.use("/api/admin/", require("./routes/admin"))
+app.use("/api/", require("./routes/admin"))
 app.use("/api/", require("./routes/doctor"))
 app.use("/api/", require("./routes/patient"))
 app.use("/api/", require("./routes/department"))

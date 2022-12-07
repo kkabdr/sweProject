@@ -44,8 +44,10 @@ const addDoctor =  (data,callback) =>{
                 category,
                 price,
                 degree,
-                rating)
-                        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING * `, 
+                rating,
+                state_id,
+                )
+                        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17) RETURNING * `, 
                         [   data.dateofbirth,
                             data.iin,
                             data.name,
@@ -61,7 +63,9 @@ const addDoctor =  (data,callback) =>{
                             data.category,
                             data.price,
                             data.degree,
-                            data.rating],(err,result)=>{
+                            data.rating,
+                            data.state_id,
+                        ],(err,result)=>{
                                 if(err){
                                     console.log("Add Admin",err)
                                     callback(true,err)
@@ -73,7 +77,7 @@ const addDoctor =  (data,callback) =>{
 })}   
 
 function getDoctorByEmail(email, callBack){
-    pool.query(`SELECT name, surname, email, number, password
+    pool.query(`SELECT id,name, surname, email, number, password
             FROM doctor
             WHERE email = $1`,[email], (err,result)=>{
                 if(err){
@@ -97,8 +101,11 @@ const getDoctorByID = (id, callback) =>{
     address,
     email,
     number,
+    state_id,
     D.department_name,
     S.specialization_name,
+    department_id,
+    specialization_id,
     experience,
     category,
     price,
@@ -169,7 +176,8 @@ function updateDoctor(id, data, callback){
             category = $13,
             price = $14,
             degree = $15,
-            rating = $16
+            rating = $16,
+            state_id = $18
 
             Where id = $17`
             ,[data.dateofbirth,
@@ -188,7 +196,8 @@ function updateDoctor(id, data, callback){
                 data.price,
                 data.degree,
                 data.rating,
-                id], (err, result)=>{
+                id,
+                data.state_id], (err, result)=>{
                     if(err){
                         callback(true,err)
                     }else{

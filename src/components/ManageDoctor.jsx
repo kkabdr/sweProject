@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
 import Header from './header/Header'
 import Footer from './footer/Footer'
 import "./Form.css";
@@ -12,8 +13,15 @@ function ManageDoctor(){
         fetchDepartments()
         fetchSpecializations()
     },[])
+    const Cookie = new Cookies
+    const token = Cookie.get("token")
+    console.log(token)
     const fetchDepartments = async ()=>{
-        const rawData = await fetch("http://localhost:4000/api/data/departments/all")
+        const rawData = await fetch("http://localhost:4000/api/data/departments/all", {
+        method:"GET",    
+        headers:{
+                "x-access-token":token
+            }})
         const departments = await rawData.json()  
         // console.log(departments)
         if(departments.ok){
@@ -22,7 +30,9 @@ function ManageDoctor(){
         }
     }
     const fetchSpecializations = async ()=>{
-        const rawData = await fetch("http://localhost:4000/api/data/specializations/all")
+        const rawData = await fetch("http://localhost:4000/api/data/specializations/all",{
+        method:"GET",    
+        headers:{"x-access-token":token}})
         const specializations = await rawData.json()  
         if(specializations.ok){
             setAllSpecs(specializations.specializations)
@@ -45,7 +55,7 @@ function ManageDoctor(){
     // }
 
     const fetchDoctors = async() =>{
-        const rawData = await fetch("http://localhost:4000/api/data/doctors/search/?department_id=" +department + "&name=" +doctor_name +"&specialization_id=" +specialization)
+        const rawData = await fetch("http://localhost:4000/api/data/doctors/search/?department_id=" +department + "&name=" +doctor_name +"&specialization_id=" +specialization,{headers:{"x-access-token":token}})
         const data = await rawData.json()
         if(data.ok){
             console.log(data.doctors)
@@ -82,6 +92,11 @@ function ManageDoctor(){
 
                 <div className = "reserveSearchItem">
                     <button className = "reserveBtn" onClick = {fetchDoctors}>Search</button>   
+                </div>
+                <div className = "reserveSearchItem">
+                    <Link to={"/admin/signuppatient"}>
+                        <button className = "reserveBtn">Add new doctor</button>   
+                    </Link>
                 </div>
             </div>
 

@@ -44,11 +44,8 @@ router.get("/data/department/:id",auth,(req,res)=>{
           
     }))
 })
-router.get("/data/departments/all",auth,(req,res)=>{
-    if(!(req.body.role == 'admin' || req.body.role == 'doctor' || req.body.role == 'patient')){
-        res.status(400).json({"ok":false, "message":"unauthorized"})
-        return
-    } 
+router.get("/data/departments/all",(req,res)=>{
+    
     console.log(getAllDepartments((err,result)=>{
         console.log(result)
         if(err){

@@ -19,60 +19,24 @@ function SignupPatient() {
     const [otherInfo, setOtherInfo] = useState()
     const [bloodGroup, setBlood] = useState();
     const [maritalStatus, setMartialStatus] = useState();
-    const [emContact, setEmContact] = useState([]);
-
-    
-    
-    function addNewEmContact(){
-        let node = document.createElement("input", {name:"emcontact", id:"emcontact", type:"number"})
-        node.classList.add("emcontactInput")
-        node.onchange = ()=>{
-            setEmContact(prev=>
-                [...prev,node.value]
-            )
-        }
-        let del = document.createElement("button")
-        del.innerHTML = "X"
-        del.onclick = ()=>{
-            console.log("triger")
-            let inp = del.parentElement.querySelector(':scope > input')
-            setEmContact(emContact.filter((el)=>el!==inp.value))
-            del.parentElement.remove()
-        }
-        let p = document.createElement("p")
-        p.appendChild(node)
-        p.appendChild(del)
-        
-        let target  = document.querySelector(".emcontact")
-        console.log(target)
-        target.appendChild(p)
-    }
-    
-    function submitEmContact(){
-        const emcontactInputs = document.querySelectorAll(".emcontactInput")
-        for(let i = 0; i < emcontactInputs.le; i++){
-            setEmContact(prev=>[...prev, emcontactInputs[i].innerHTML])
-        }
-    }
+    const [emContact, setEmContact] = useState();
     async function handleSubmit(){
-        submitEmContact()
-        console.log(emContact)
         const cookies = new Cookies()
         const token = cookies.get('token')
         const baseInfo = {
-            "dateOfBirth":dateOfBirth,
+            "dateofbirth":dateOfBirth,
             "iin":iin,
             "stateID":stateID,
             "name":name,
             "surname":surname,
             "middlename":middlename,
-            "contactNumber":[contactNumber],
+            "number":contactNumber,
             "email":email,
             "address":address,
             "password":password,
-            "bloodGroup":bloodGroup,
-            "maritalStatus":maritalStatus,
-            "emergencyContact":emContact,
+            "bloodgroup":bloodGroup,
+            "marital_status":maritalStatus,
+            "emergency_contact":emContact,
             "other":otherInfo
         }
 
@@ -106,11 +70,7 @@ function SignupPatient() {
             <p><input onChange={(e)=>{setAddress(e.target.value)}} name="address" type="text" placeholder='enter address'/></p>
             <p><input onChange={(e)=>{setEmail(e.target.value)}} name="email" type="email" placeholder='enter email'/></p>
             <p><input onChange={(e)=>{setPassword(e.target.value)}} name="password" type="password" placeholder='enter password'/></p>
-            
-            <p><h3>Specific Information</h3></p>
-            <div className='emcontact'>
-                <p><button onClick={addNewEmContact} className = "colorful">Add Contact Number</button></p>
-            </div>
+            <p><input onChange={(e)=>{setEmContact(e.target.value)}} name="number" type="text" placeholder='enter your emergency phone number'/></p>
             <p>Chose marital status</p>
             <p>single<input onChange={(e)=>{setMartialStatus(e.target.value)}} name="maritalStatus" value="single" type="radio"/></p>
             <p>married<input onChange={(e)=>{setMartialStatus(e.target.value)}} name="maritalStatus" value="married" type="radio"/></p>

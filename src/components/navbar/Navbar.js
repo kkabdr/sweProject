@@ -7,6 +7,7 @@ const Navbar = () => {
                     <span
                      className = "logo">Densys.me</span>
                     <button className="navButton">Login</button>
+
                 </div>
             </div>
         </div>

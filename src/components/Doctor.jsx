@@ -1,14 +1,40 @@
 import React,{useState,useEffect} from "react";
 import { useParams,Link } from "react-router-dom";
 import Cookies from 'universal-cookie'
+
 function Doctor(){
-    useEffect(()=>{
+    const [doctorForm, setDoctorForm] = useState({
+        "dateofbirth":"",
+            "iin":"",
+            "state_id":"",
+            "name":"",
+            "surname":"",
+            "middlename":"",
+            "number":"",
+            "email":"",
+            "address":"",
+            "password":"",
+            "department_id":"", 
+            "experience":"",
+            "photo":"none",
+            "category":"",
+            "price":"",
+            "rating":0,
+            // "schedule": {
+            //     "workdays":workingdays,
+            //     "startTime":startTime,
+            //     "endTime":endTime
+            // },
+            "specialization_id": "",
+            "degree":""
+    })
+
+    useEffect( ()=>{
         fetchDoctorByID()
         fetchSpecializations()
         fetchDepartments()
     },[])
     let {id} = useParams();
-    const [doctorForm, setDoctorForm] = useState()
     
     const fetchDoctorByID = async ()=>{
         const rawData = await fetch("http://localhost:4000/api/data/doctor/" + id)
@@ -17,6 +43,7 @@ function Doctor(){
             console.log(result.doctor)
             setDoctorForm(result.doctor)
         }
+        return
     }
     
     const fetchDepartments = async ()=>{
@@ -24,16 +51,20 @@ function Doctor(){
         const departments = await rawData.json()  
         // console.log(departments)
         if(departments.ok){
+            console.log(departments.departments)
             setAllDeps(departments.departments)
-            console.log(allDeps)
         }
+        return
+
     }
     const fetchSpecializations = async ()=>{
         const rawData = await fetch("http://localhost:4000/api/data/specializations/all")
         const specializations = await rawData.json()  
         if(specializations.ok){
             setAllSpecs(specializations.specializations)
+            console.log(specializations.specializations)
         }
+        return
     }
     const [allSpecs,setAllSpecs] = useState()
     const [name, setName] = useState();
@@ -73,18 +104,16 @@ function Doctor(){
         }
     }
     
-    async function handleSubmit(){
-        
-    }
 
     const updateDoctor = async ()=>{
         console.log(specialization)
         const cookies = new Cookies()
         const token = cookies.get('token')
+        console.log(token)
         const baseInfo = {
             "dateofbirth":dateOfBirth,
             "iin":iin,
-            "stateID":stateID,
+            "state_id":stateID,
             "name":name,
             "surname":surname,
             "middlename":middlename,
@@ -114,9 +143,10 @@ function Doctor(){
         console.log(all)
         
         const rawData = await fetch("http://localhost:4000/api/data/doctor/"+id,{
-            method:"POST",
+            method:"PUT",
             headers:{
-                "Content-Type": "application/json"
+                "x-access-token":token,
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(all)
         })
@@ -126,7 +156,20 @@ function Doctor(){
     }
 
     const deleteDoctor = async ()=>{
+        console.log(specialization)
+        const cookies = new Cookies()
+        const token = cookies.get('token')
 
+        
+        const rawData = await fetch("http://localhost:4000/api/data/doctor/"+id,{
+            method:"DELETE",
+            headers:{
+                "x-access-token":token,
+                "Content-Type": "application/json"
+            },
+        })
+        const result = await rawData.json()
+        console.log(result)
     }
 
 
@@ -135,14 +178,14 @@ function Doctor(){
             <div>
             <div className='signup'>
             <p><h3>General Information</h3></p>
-            <p><input onChange={(e)=>{setName(e.target.value)}} name="name" type="text" placeholder='enter name'/></p>
-            <p><input onChange={(e)=>{setSurname(e.target.value)}} name="surname" type="text" placeholder='enter surname'/></p>
-            <p><input onChange={(e)=>{setMidname(e.target.value)}} name="middlename" type="text" placeholder='enter middlename'/></p>
-            <p><input onChange={(e)=>{setContactNumber(e.target.value)}} name="contactNumber" type="number" placeholder='enter contact number'/></p>
-            <p><input onChange={(e)=>{setIIN(e.target.value)}} name="iin" type="number" placeholder='enter name IIN'/></p>
-            <p><input onChange={(e)=>{setStateID(e.target.value)}} name="stateID" type="number" placeholder='enter state ID'/></p>
-            <p><input onChange={(e)=>{setDateOfBirth(e.target.value)}} name="dateOfBirth" type="date"/></p>
-            <p><input onChange={(e)=>{setAddress(e.target.value)}} name="address" type="text" placeholder='enter address'/></p>
+            <p><input onChange={(e)=>{setName(e.target.value)}}  name="name" type="text" placeholder='enter name'/></p>
+            <p><input onChange={(e)=>{setSurname(e.target.value)}}  name="surname" type="text" placeholder='enter surname'/></p>
+            <p><input onChange={(e)=>{setMidname(e.target.value)}}  name="middlename" type="text" placeholder='enter middlename'/></p>
+            <p><input onChange={(e)=>{setContactNumber(e.target.value)}}  name="contactNumber" type="number" placeholder='enter contact number'/></p>
+            <p><input onChange={(e)=>{setIIN(e.target.value)}}  name="iin" type="number" placeholder='enter name IIN'/></p>
+            <p><input onChange={(e)=>{setStateID(e.target.value)}}  name="stateID" type="number" placeholder='enter state ID'/></p>
+            <p><input onChange={(e)=>{setDateOfBirth(e.target.value)}}  name="dateOfBirth" type="date"/></p>
+            <p><input onChange={(e)=>{setAddress(e.target.value)}}  name="address" type="text" placeholder='enter address'/></p>
             <p><input onChange={(e)=>{setEmail(e.target.value)}} name="email" type="email" placeholder='enter email'/></p>
             <p><input onChange={(e)=>{setPassword(e.target.value)}} name="password" type="password" placeholder='enter password'/></p>
 
@@ -151,9 +194,11 @@ function Doctor(){
             
             
             <select onChange={(e) => { setDepID(e.target.value); } }  className = "options">
+                <option value={doctorForm.department_id} className = "optionItem">{doctorForm.department_name}</option>
                 {allDeps?.map((dep) => {return <option value={dep.id} className = "optionItem">{dep.department_name}</option>})}
             </select>
-            <select onChange={(e) => { setSpecID(e.target.value); } }  className = "options">
+            <select onChange={(e) => { setSpecID(e.target.value); } } className = "options">
+                <option value={doctorForm.specialization_id} className = "optionItem">{doctorForm.specialization_name}</option>
                 {allSpecs?.map((spec) => {return <option value={spec.id} className = "optionItem">{spec.specialization_name}</option>})}
             </select>
             <p><input onChange={(e)=>{setExperience(e.target.value)}} name="experience" type="number" placeholder='enter expience'/></p>

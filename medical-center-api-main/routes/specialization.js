@@ -23,7 +23,7 @@ router.post("/data/specialization", auth, (req,res)=>{
     })
 })
 router.get("/data/specialization/:id",auth,(req,res)=>{
-    if(!(req.body.role == 'admin' || req.body.role == 'doctor',req.body.role == 'patient')){
+    if(!(req.body.role == 'admin' || req.body.role == 'doctor' ||   req.body.role == 'patient')){
         res.status(400).json({"ok":false, "message":"unauthorized"})
         return
     } 
@@ -44,11 +44,8 @@ router.get("/data/specialization/:id",auth,(req,res)=>{
           
     }))
 })
-router.get("/data/specializations/all",auth,(req,res)=>{
-    // if(!(req.body.role == 'admin' || req.body.role == 'doctor',req.body.role == 'patient')){
-    //     res.status(400).json({"ok":false, "message":"unauthorized"})
-    //     return
-    // } 
+router.get("/data/specializations/all",(req,res)=>{
+     
     console.log(getAllSpecializations((err,result)=>{
         console.log(result)
         if(err){

@@ -5,8 +5,18 @@ import "./Header.css";
 //import 'react-date-range/dist/theme/default.css';
 //import { format } from "date-fns";
 import {Link} from 'react-router-dom';
-
+import User from "../User"; 
+import { useState,useEffect } from "react";
+import Logout from "../Logout";
+import Login from "../Login";
+import Cookies from "universal-cookie";
 const Header = () => {
+
+
+
+    useEffect(()=>{
+        chechUser()
+    },[])
     // const [openDate, setOpenDate] = useState(false);
     // const [department, setDepartment] = useState("");
     // const [search, setSearch] = useState([
@@ -15,7 +25,17 @@ const Header = () => {
     //         endDate: new Date(),
     //         key: 'selection'
     //     }
+
+    const [tokenState,setTokenState] = useState()
+    const [roleState,setRoleState] = useState()
+    const [userIDState, setUserIDState] = useState()
     // ]);
+    const chechUser = async ()=>{
+        const cookie = new Cookies
+        setTokenState(cookie.get('token'))
+        setRoleState(cookie.get('role'))
+        setUserIDState(cookie.get('userID'))
+    }
     
     return (
         <div className = "header">
@@ -46,6 +66,9 @@ const Header = () => {
                             <button className="navButton">Login</button>
                         </Link>
                     </div>
+
+                    {/* {tokenState!==''?Logout:Login} */}
+                    
                 </div>
                 {/* <h1 className="headerTittle">"Make a Reservation today, to get service tomorrow"</h1>
                 <p className="headerDesc">
@@ -54,6 +77,7 @@ const Header = () => {
                 <Link to = "/reservation">
                     <button className = "headerBtn">Reservation</button>
                 </Link>
+                <User/>
             </div>  
         </div>
     )

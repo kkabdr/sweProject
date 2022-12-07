@@ -7,15 +7,19 @@ import ManagePatient from "./components/ManagePatient"
 // import Patient from "./pages/Patient";
 // import UpdateAppointment from "./pages/UpdateAppointment";
 // import DeleteAppointment from "./pages/DeleteAppointment";
-import {Route, Routes, BrowserRouter} from 'react-router-dom';
+import {Route, Routes, BrowserRouter, useNavigate} from 'react-router-dom';
+import Cookies from "universal-cookie";
 import Home from "./pages/home/Home";
 import Reservation from "./pages/Reservation/Reservation";
 import Doctor from "./components/Doctor";
 import Contact from "./pages/contact/contact";
 import Departments from "./pages/contact/departments";
+// import Cookies from "universal-cookie";
+
 function App() {
-
-
+// 
+   
+  // const cookie = new Cookies
   return (
     <div className="App">
       <BrowserRouter>

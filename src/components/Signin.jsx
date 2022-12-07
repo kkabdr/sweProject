@@ -1,10 +1,10 @@
 import React,{useState} from 'react'
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 import './Form.css';
 import {Link} from 'react-router-dom';
 import Header from './header/Header';
 import Footer from './footer/Footer';
+import Cookies from 'universal-cookie';
 // import SignupDoctor from "./components/SignupDoctor"
 // import SignupPatient from "./components/SignupPatient";
 
@@ -29,11 +29,16 @@ function Signin(){
         })
 
         const result = await rawData.json()
+        console.log(result)
         if(result.ok){
             //create cookie with jwt
+            console.log("here")
             const cookies = new Cookies();
             cookies.set('token', result.token, { path: '/' });
+            cookies.set('role', role, {path:'/'})
+            cookies.set('userID', result.id, {path:"/"})
             console.log(cookies.get('token'))
+    
             navigate("/admin")
             return
         }

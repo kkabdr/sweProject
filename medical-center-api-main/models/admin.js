@@ -3,11 +3,27 @@ const bcrypt = require("bcrypt")
 const salt = 10
 
 function getAdminByEmail(email, callBack){
-    pool.query(`SELECT admin_id,name, surname, email, number, password
+    pool.query(`SELECT admin_id as id,name, surname, email, number, password
             FROM administration
             WHERE email = $1`,[email], (err,result)=>{
                 if(err){
                     console.log("get admin with email", err)
+                    callBack(true,err)
+                }else if(result.rows.length === 0 ){
+                    callBack(true, new Error("Not found"))
+                }else {
+                    console.log(result.rows)
+                    callBack(false, result.rows[0])
+                }
+    })
+}
+
+function getAdminByID(id,callBack){
+    pool.query(`SELECT admin_id as id,name, surname, email, number
+            FROM administration
+            WHERE admin_id = $1`,[id], (err,result)=>{
+                if(err){
+                    console.log("get admin with id", id , err)
                     callBack(true,err)
                 }else if(result.rows.length === 0 ){
                     callBack(true, new Error("Not found"))
@@ -54,4 +70,4 @@ function deleteAdmin(id,callback){
     })
 }
 
-module.exports = {deleteAdmin, addAdmin, getAdminByEmail}
+module.exports = {getAdminByID,deleteAdmin, addAdmin, getAdminByEmail}

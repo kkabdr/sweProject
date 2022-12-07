@@ -1,9 +1,12 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const router  = express.Router()
-const {deleteAdmin,addAdmin,getAdminByEmail} = require("../models/admin")
+const {deleteAdmin,addAdmin,getAdminByEmail, getAdminByID} = require("../models/admin")
 const auth = require("./middleware")
 const bcrypt = require("bcrypt")
+const { route } = require('./doctor')
+
+
 
 router.post("/admin/signup",  (req,res)=>{
     const regisration = req.body.registration
@@ -18,6 +21,29 @@ router.post("/admin/signup",  (req,res)=>{
             res.status(200).json({"ok":true, "result":result})
         }
     })
+})
+
+router.get("/data/admin/:id", auth,(req,res)=>{
+    if(!(req.body.role === 'admin' || req.body.role === 'doctor' || req.body.role == 'patient')){
+        res.status(400).json({"ok":false, "message":"unauthorized"})
+        return
+    } 
+    let id = parseInt(req.params.id)
+    console.log(id)     
+    console.log(getAdminByID(id,(err,result)=>{
+        console.log(result)
+        if(err){
+            if(result.message === "Not found" ){
+                res.status(404).json({ok:false, message:"Not Found"})
+            }else{
+                res.status(500).json({ok:false, message:"internal erver error"})
+            }
+            return  
+        }else{
+            res.status(200).json({"ok":true, "admin":result})
+        }
+          
+    }))
 })
 
 router.post("/admin/signin/",(req,res)=>{
@@ -43,6 +69,7 @@ router.post("/admin/signin/",(req,res)=>{
     })
     
 })
+
 router.delete("/admin/admin/:id",auth, (req,res)=>{
     if(req.body.role != 'admin'){
         res.status(400).json({"ok":false, "message":"unauthorized"})
