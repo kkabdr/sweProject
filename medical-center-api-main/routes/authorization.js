@@ -28,7 +28,7 @@ router.post("/admin/signup", (req,res)=>{
 })
 
 router.post("/admin/signin/",(req,res)=>{
-    credentials = req.body.credentials
+    let credentials = req.body.credentials
     console.log(credentials.email)
     getAdminByEmail(credentials.email, (err,result)=>{
         if(err){
@@ -60,7 +60,7 @@ router.post("/admin/signin/",(req,res)=>{
 
 
 router.post("/doctor/signup",auth,(req,res)=>{
-    if(req.body.role != 'admin'){
+    if(req.body.role !== 'admin'){
         res.status(400).json({"ok":false, "message":"unauthorized"})
         return
     } 
@@ -79,7 +79,7 @@ router.post("/doctor/signup",auth,(req,res)=>{
 })
 
 router.post("/doctor/signin/",(req,res)=>{
-    credentials = req.body.credentials
+    let credentials = req.body.credentials
     console.log(credentials)
     getDoctorByEmail(credentials.email, (err,result)=>{
         if(err){
@@ -108,7 +108,7 @@ router.post("/doctor/signin/",(req,res)=>{
     
 })
 router.post("/patient/signup",auth,(req,res)=>{
-    if(req.body.role != 'admin'){
+    if(req.body.role !== 'admin'){
         res.status(400).json({"ok":false, "message":"unauthorized"})
         return
     } 
@@ -127,7 +127,7 @@ router.post("/patient/signup",auth,(req,res)=>{
 })
 
 router.post("/patient/signin/",(req,res)=>{
-    credentials = req.body.credentials
+    let credentials = req.body.credentials
     console.log(credentials)
     getPatientByEmail(credentials.email, (err,result)=>{
         if(err){

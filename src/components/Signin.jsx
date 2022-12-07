@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import './Form.css';
 import {Link} from 'react-router-dom';
@@ -8,6 +9,7 @@ import Footer from './footer/Footer';
 // import SignupPatient from "./components/SignupPatient";
 
 function Signin(){
+    const navigate = useNavigate()
     const [role,setRole] = useState()
     const [email,setEmail] = useState()
     const [password,setPassword] = useState()
@@ -32,7 +34,7 @@ function Signin(){
             const cookies = new Cookies();
             cookies.set('token', result.token, { path: '/' });
             console.log(cookies.get('token'))
-            //navidate to admin page
+            navigate("/admin")
             return
         }
         console.log('Credentials error')

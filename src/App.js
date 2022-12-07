@@ -2,13 +2,15 @@ import Signin from "./components/Signin";
 import SignupDoctor from "./components/SignupDoctor"
 import SignupPatient from "./components/SignupPatient";
 import AdminAllDoctor from "./components/AdminAllDoctor"
+import ManageDoctor from "./components/ManageDoctor"
+import ManagePatient from "./components/ManagePatient"
 // import Patient from "./pages/Patient";
 // import UpdateAppointment from "./pages/UpdateAppointment";
 // import DeleteAppointment from "./pages/DeleteAppointment";
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import Home from "./pages/home/Home";
 import Reservation from "./pages/Reservation/Reservation";
-import Doctor from "./pages/doctor/doctor";
+import Doctor from "./components/Doctor";
 import Contact from "./pages/contact/contact";
 import Departments from "./pages/contact/departments";
 function App() {
@@ -27,6 +29,10 @@ function App() {
         <Route exact path = "/contact" element = {<Contact/>}></Route>
         <Route exact path = "/admin/signuppatient" element = {<SignupPatient/>}></Route>
         <Route exact path = "/admin/signupdoctor" element = {<SignupDoctor/>}></Route>
+        <Route exact path = "/admin/manage/doctors" element = {<ManageDoctor/>}></Route>
+        <Route exact path = "/admin/manage/patients" element = {<ManagePatient/>}></Route>
+        <Route path = "/admin/manage/doctor/:id" element = {<Doctor/>}></Route>
+
         {/* <Route exact path = "/patient" element = {<Patient/>}></Route> */}
         {/* <Route exact path = "/patient/update" element = {<UpdateAppointment/>}></Route> */}
         {/* <Route exact path = "/patient/delete" element = {<DeleteAppointment/>}></Route> */}

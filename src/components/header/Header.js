@@ -47,10 +47,10 @@ const Header = () => {
                         </Link>
                     </div>
                 </div>
-                <h1 className="headerTittle">"Make a Reservation today, to get service tomorrow"</h1>
+                {/* <h1 className="headerTittle">"Make a Reservation today, to get service tomorrow"</h1>
                 <p className="headerDesc">
                     High specialized doctors, new equipment with high accuracy.
-                </p>
+                </p> */}
                 <Link to = "/reservation">
                     <button className = "headerBtn">Reservation</button>
                 </Link>
