@@ -5,7 +5,7 @@ const router  = express.Router()
 const auth = require("./middleware")
 const bcrypt = require("bcrypt")
 const { getAllDoctors, deleteDoctor, updateDoctor, getDoctorByID, getDoctorWithFilter } = require('../models/doctor')
-const { getAllAppointmentsOfDoctor } = require('../models/appointment')
+const { getAllAppointmentsOfDoctor, markAppointmentVisited } = require('../models/appointment')
 
 router.get("/data/doctors/all",auth,(req,res)=>{
     if(!(req.body.role == 'admin' || req.body.role == 'doctor' || req.body.role == 'patient')){
@@ -49,18 +49,55 @@ router.get("/data/doctor/:id",auth,(req,res)=>{
           
     }))
 })
+
+router.post("/data/appointments/:id",auth,(req,res)=>{
+    if(!(req.body.role == 'admin' || req.body.role == 'doctor')){
+        res.status(400).json({"ok":false, "message":"unauthorized"})
+        return
+    }
+    let id = parseInt(req.params.id)
+    console.log(id)
+    markAppointmentVisited(id,(err,result)=>{
+        if(err){
+            res.status(500).json({"ok":false,"message":"error"})
+        }else{
+            res.status(200).json({"ok":true})
+        }
+    })
+})
+
 router.get("/data/appointments/doctor/:id", auth,(req,res)=>{
     if(!(req.body.role == 'admin' || req.body.role == 'doctor')){
         res.status(400).json({"ok":false, "message":"unauthorized"})
         return
     } 
+    
+    let name = ""
+    let visited = null
+    let cause = ""
+    if(typeof req.query.name !== 'undefined'){
+        name = req.query.name
+    }
+    if(req.query.visited !== ""){
+        visited = req.query.visited
+    }
+    if(req.query.cause !== ""){
+        cause = req.query.cause
+    }
     let id = parseInt(req.params.id)
-    console.log(id)     
-    console.log(getAllAppointmentsOfDoctor(id,(err,result)=>{
+    const  filter={
+        "name":name,
+        "visited":visited,
+        "id":id,
+        "cause":cause
+
+    }
+    console.log(filter)     
+    console.log(getAllAppointmentsOfDoctor(filter,(err,result)=>{
         console.log(result)
         if(err){
             if(result.message === "Not found" ){
-                res.status(404).json({ok:false, message:"Not Found"})
+                res.status(200).json({"ok":true, "appointments":[]})
             }else{
                 res.status(500).json({ok:false, message:"internal erver error"})
             }

@@ -6,9 +6,9 @@ const verify = (req,res,next) =>{
         return res.status(403).json({ok:false, message:"A token is requried"})
     }
     try{
-        console.log(token)
+        // console.log(token)
          const decoded = jwt.verify(token, "secret")
-        console.log(decoded)
+        // console.log(decoded)
         req.body.role = decoded.role
         req.body.user_id = decoded.id
     }catch(err){

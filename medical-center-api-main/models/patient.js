@@ -88,7 +88,7 @@ const addPatient =  (data,callback) =>{
                             data.emergency_contact,
                             data.marital_status,
                             data.other,
-                            state_id
+                            data.state_id
                         ],(err,result)=>{
                                 if(err){
                                     console.log("Add Admin",err)

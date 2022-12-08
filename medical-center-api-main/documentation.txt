@@ -180,12 +180,43 @@ DOCTOR:
 
         to get doctor via filter
 
-        GET: /api/data/doctors/search/?department_id&name&specialization_id
+        GET: /api/data/doctors/search/?department_id=&name=&specialization_id=
             succeess
             {
                 ok:true
                 doctor:[
                     {
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         "id": 6,
                         "name": "Doctor1",
                         "surname": "Doctor1",

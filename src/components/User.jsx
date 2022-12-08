@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import Cookies from "universal-cookie";
 import { Link,useNavigate } from "react-router-dom";
+import "./Form.css";
 
 
 function User(){
@@ -14,6 +15,7 @@ function User(){
     },[])
     const [name, setName] = useState()
     const [role,setRole] = useState()
+    
     const fetchUser = async()=>{
         const rawData = await fetch("http://localhost:4000/api/data/" + userRole + "/"+userID,{
         method:"GET",    
@@ -29,9 +31,9 @@ function User(){
     }
 
     return(
-        <div>
-            <span>Role: {role} ----|----</span>
-            <span>Name: {name}</span>
+        <div className="user">
+            <h3>Role: {role}</h3>
+            <h3>Name: {name}</h3>
         </div>
     )
 }

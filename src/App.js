@@ -14,6 +14,9 @@ import Reservation from "./pages/Reservation/Reservation";
 import Doctor from "./components/Doctor";
 import Contact from "./pages/contact/contact";
 import Departments from "./pages/contact/departments";
+import Appointment from "./components/Appointment";
+import MyReservations from "./components/MyReservations";
+import MyPatients from "./components/MyPatients";
 // import Cookies from "universal-cookie";
 
 function App() {
@@ -26,6 +29,7 @@ function App() {
       <Routes>
         <Route exact path = "/" element = {<Home/>}></Route>
         <Route exact path = "/reservation" element = {<Reservation/>}></Route>
+        <Route exact path = "/reservation/:id" element = {<MyReservations/>}></Route>
         <Route exact path = "/departments" element = {<Departments/>}></Route>
         <Route exact path = "/doctor" element = {<Doctor/>}></Route>
         <Route exact path = "/login" element = {<Signin/>}></Route>
@@ -36,7 +40,8 @@ function App() {
         <Route exact path = "/admin/manage/doctors" element = {<ManageDoctor/>}></Route>
         <Route exact path = "/admin/manage/patients" element = {<ManagePatient/>}></Route>
         <Route path = "/admin/manage/doctor/:id" element = {<Doctor/>}></Route>
-
+        <Route path = "/make/appointment/:id" element = {<Appointment/>}></Route>
+        <Route path = "/my-patients" element={<MyPatients/>}></Route>
         {/* <Route exact path = "/patient" element = {<Patient/>}></Route> */}
         {/* <Route exact path = "/patient/update" element = {<UpdateAppointment/>}></Route> */}
         {/* <Route exact path = "/patient/delete" element = {<DeleteAppointment/>}></Route> */}

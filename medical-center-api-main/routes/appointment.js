@@ -11,6 +11,7 @@ router.post("/data/appointment", auth, (req,res)=>{
         return
     } 
     const appointment = req.body.appointment
+    console.log(req.body)
     addAppointment(appointment, (err,result)=>{
         if(err){
             console.log(err)

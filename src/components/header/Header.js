@@ -10,6 +10,7 @@ import { useState,useEffect } from "react";
 import Logout from "../Logout";
 import Login from "../Login";
 import Cookies from "universal-cookie";
+import MyPatients from "../MyPatients";
 const Header = () => {
 
 
@@ -31,7 +32,7 @@ const Header = () => {
     const [userIDState, setUserIDState] = useState()
     // ]);
     const chechUser = async ()=>{
-        const cookie = new Cookies
+        const cookie = new Cookies()
         setTokenState(cookie.get('token'))
         setRoleState(cookie.get('role'))
         setUserIDState(cookie.get('userID'))
@@ -46,38 +47,34 @@ const Header = () => {
                             <span className = "logo">Densys.me</span>
                         </Link>
                     </div>
+                    
+                    <div className = "headerListItem">
+                        <Link to = {roleState==='admin'?"/admin":"/"}>
+                        <span className="link">{roleState==='admin'?"Admin":"Home"}</span>
+                        </Link>
+                    </div>
+
                     <div className = "headerListItem active">
                         <Link to = "/departments">
                             <span className="link">Departments</span>
                         </Link>
                     </div>
-                    <div className = "headerListItem">
-                        <Link to = "/reservation">
-                            <span className="link">Reservations</span>
+                    <div>
+                        <Link to = {roleState==='doctor'?"/my-patients/":"/reservation"}>
+                            <span className="link">{roleState==='doctor'?"My patients":"Reservations"}</span>
                         </Link>
                     </div>
-                    <div className = "headerListItem">
-                        <Link to = "/contact">
-                            <span className="link">Contact Us</span>
-                        </Link>
-                    </div>
-                    <div className = "headerListItem">
-                        <Link to = "/login">
-                            <button className="navButton">Login</button>
-                        </Link>
-                    </div>
+                        
 
-                    {/* {tokenState!==''?Logout:Login} */}
+                    {tokenState!==''?<><Logout/> <User/></>:<Login/>}
                     
                 </div>
                 {/* <h1 className="headerTittle">"Make a Reservation today, to get service tomorrow"</h1>
                 <p className="headerDesc">
                     High specialized doctors, new equipment with high accuracy.
                 </p> */}
-                <Link to = "/reservation">
-                    <button className = "headerBtn">Reservation</button>
-                </Link>
-                <User/>
+                {/* {roleState!==''?<User/>:<Login/>} */}
+                {/* <User/> */}
             </div>  
         </div>
     )

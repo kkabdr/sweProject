@@ -1,20 +1,26 @@
 import React from "react";
 import Cookies from "universal-cookie";
-import {Link} from 'react-router-dom'
+
+import {Link, useNavigate} from 'react-router-dom'
 
 function Logout(){
+    const navigate = useNavigate()
+    const logout = ()=>{
+        console.log("Clicked")
+        const cookie = new Cookies()
+        cookie.set('token','')
+        cookie.set('role','')
+        cookie.set('userID', '')
 
-    // const logout = ()=>{
-    //     const cookie = new Cookies
-    //     cookie.set('token','',{path:"/"})
-    //     cookie.set('role','',{path:"/"})
-    //     cookie.set('userID', '',{path:"/"})
-    // }
+        navigate("/")
+        // window.location.reload(false);
+
+    }
 
     return(
         <div className = "headerListItem">
                 <Link to="/">
-                    <button className="navButton">Logout</button>
+                    <button onClick={logout} className="navButton">Logout</button>
                 </Link>
         </div>
     )

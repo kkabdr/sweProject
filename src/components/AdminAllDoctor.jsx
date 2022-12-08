@@ -51,7 +51,7 @@ function AdminAllDoctor(){
             </Link>
 
             </p>
-            
+            <img src="https://pyxis.nymag.com/v1/imgs/4db/9a9/78f0f50285dd11bef4946bc47283e49281-pills-lede.rsocial.w1200.jpg"></img>
             </div>
         </div>
         

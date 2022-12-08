@@ -74,18 +74,19 @@ router.get("/data/appointments/patient/:id",auth, (req,res)=>{
         return
     } 
     let id = parseInt(req.params.id)
+    let visited = req.query.visited
     console.log(id)     
-    console.log(getAllAppointmentsOfPatient(id,(err,result)=>{
-        console.log(result)
+    console.log(getAllAppointmentsOfPatient(id,visited,(err,result)=>{
+        // console.log(result)
         if(err){
             if(result.message === "Not found" ){
-                res.status(404).json({ok:false, message:"Not Found"})
+                res.status(200).json({"ok":true, "appointments":[]})
             }else{
                 res.status(500).json({ok:false, message:"internal erver error"})
             }
             return 
         }else{
-            res.status(200).json({"ok":true, "doctors":result})
+            res.status(200).json({"ok":true, "appointments":result})
         }
           
     }))

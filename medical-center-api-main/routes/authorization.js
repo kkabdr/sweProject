@@ -145,7 +145,7 @@ router.post("/patient/signin/",(req,res)=>{
                         const token = jwt.sign({"role":"patient",
                         id:result.id},"secret",{expiresIn:"24h"})
                         console.log("Authorized Doctor")
-                        res.status(200).json({ok:true, token:token,id:result,role:'patient'})
+                        res.status(200).json({ok:true, token:token,id:result.id,role:'patient'})
                     }else{
                         res.status(404).json({"ok":false,"message":"Credentials error"})
 

@@ -67,7 +67,6 @@ function SignupDoctor() {
     }
     
     async function handleSubmit(){
-        console.log(specialization)
         const cookies = new Cookies()
         const token = cookies.get('token')
         const baseInfo = {
@@ -100,7 +99,6 @@ function SignupDoctor() {
             "token":token,
             "doctor":baseInfo,
         }
-        console.log(all)
         
         const rawData = await fetch("http://localhost:4000/api/auth/doctor/signup",{
             method:"POST",
@@ -132,9 +130,11 @@ function SignupDoctor() {
             
             
             <select onChange={(e) => { setDepID(e.target.value); } }  className = "options">
+            <option value="" className = "optionItem">Select Department</option>
                 {allDeps?.map((dep) => {return <option value={dep.id} className = "optionItem">{dep.department_name}</option>})}
             </select>
             <select onChange={(e) => { setSpecID(e.target.value); } }  className = "options">
+            <option value="" className = "optionItem">Select Specialization</option>
                 {allSpecs?.map((spec) => {return <option value={spec.id} className = "optionItem">{spec.specialization_name}</option>})}
             </select>
             <p><input onChange={(e)=>{setExperience(e.target.value)}} name="experience" type="number" placeholder='enter expience'/></p>

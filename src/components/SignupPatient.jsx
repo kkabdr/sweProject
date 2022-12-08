@@ -44,7 +44,6 @@ function SignupPatient() {
             "token":token,
             "patient":baseInfo,
         }
-        console.log(all)
         
         const rawData = await fetch("http://localhost:4000/api/auth/patient/signup",{
             method:"POST",

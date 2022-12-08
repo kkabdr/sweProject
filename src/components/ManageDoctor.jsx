@@ -13,9 +13,8 @@ function ManageDoctor(){
         fetchDepartments()
         fetchSpecializations()
     },[])
-    const Cookie = new Cookies
+    const Cookie = new Cookies()
     const token = Cookie.get("token")
-    console.log(token)
     const fetchDepartments = async ()=>{
         const rawData = await fetch("http://localhost:4000/api/data/departments/all", {
         method:"GET",    
@@ -94,7 +93,7 @@ function ManageDoctor(){
                     <button className = "reserveBtn" onClick = {fetchDoctors}>Search</button>   
                 </div>
                 <div className = "reserveSearchItem">
-                    <Link to={"/admin/signuppatient"}>
+                    <Link to={"/admin/signupdoctor"}>
                         <button className = "reserveBtn">Add new doctor</button>   
                     </Link>
                 </div>

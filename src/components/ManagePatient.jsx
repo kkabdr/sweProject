@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Header from './header/Header'
 import Footer from './footer/Footer'
 import "./Form.css";
-
+import Cookies from "universal-cookie";
 
 function ManagePatient(){
     useEffect(()=>{
@@ -21,9 +21,15 @@ function ManagePatient(){
     //         "Surname: ", doctor.surname, ";", "\n")
     //     )
     // }
+    const Cookie = new Cookies()
+    const token = Cookie.get("token")
 
     const fetchPatientWithFilter = async()=>{
-        const rawData = await fetch("http://localhost:4000/api/data/patients/?name=" + patient_name)
+        const rawData = await fetch("http://localhost:4000/api/data/patients/?name=" + patient_name,{
+        method:"GET",    
+        headers:{
+                "x-access-token":token
+            }})
         const result = await rawData.json()
 
         if(result.ok){
@@ -32,12 +38,13 @@ function ManagePatient(){
             myNode.innerHTML = '';
             setData(result.patients)
         }
-
-
     }
 
     const fetchPatients = async() =>{
-        const rawData = await fetch("http://localhost:4000/api/data/patients/all")
+        const rawData = await fetch("http://localhost:4000/api/data/patients/all",{method:"GET",    
+        headers:{
+                "x-access-token":token
+            }})
         const data = await rawData.json()
         if(data.ok){
             console.log(data.doctors)

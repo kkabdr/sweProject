@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
+import Cookies from "universal-cookie";
 
 //import { format } from "date-fns";
 const Reservation = () => {
@@ -44,9 +45,15 @@ const Reservation = () => {
     //         "Surname: ", doctor.surname, ";", "\n")
     //     )
     // }
-
+    const cookies = new Cookies()
     const fetchDoctors = async() =>{
-        const rawData = await fetch("http://localhost:4000/api/data/doctors/search/?department_id=" +department + "&name=" +doctor_name +"&specialization_id=" +specialization)
+        const rawData = await fetch("http://localhost:4000/api/data/doctors/search/?department_id=" +department + "&name=" +doctor_name +"&specialization_id=" +specialization,
+        {
+            method:"GET",
+            headers:{
+                "x-access-token":cookies.get("token")
+            }   
+        })
         const data = await rawData.json()
         if(data.ok){
             console.log(data.doctors)
@@ -96,7 +103,7 @@ const Reservation = () => {
                             <h1 className = "styled-h1">{item.name} {item.surname}</h1>
                             <h2 className = "styled-h2">{item.department_name}</h2>
                             <h2 className = "styled-h2">{item.specialization_name}</h2>
-                            <Link to="/">
+                            <Link to={"/make/appointment/" + item.id}>
                                     <button className="colorful">Appoint</button>
                             </Link>
                             {/* <button className="btn btn-view" onClick={() => ViewDoctor(item)}>View</button> */}

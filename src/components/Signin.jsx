@@ -19,7 +19,6 @@ function Signin(){
             "email":email,
             "password":password
         }
-        console.log(role,email)
         const rawData = await fetch("http://localhost:4000/api/auth/"+role+"/signin",{
             method:"POST",
             headers:{
@@ -29,17 +28,16 @@ function Signin(){
         })
 
         const result = await rawData.json()
-        console.log(result)
         if(result.ok){
             //create cookie with jwt
             console.log("here")
             const cookies = new Cookies();
-            cookies.set('token', result.token, { path: '/' });
-            cookies.set('role', role, {path:'/'})
-            cookies.set('userID', result.id, {path:"/"})
+            cookies.set('token', result.token );
+            cookies.set('role', role)
+            cookies.set('userID', result.id)
             console.log(cookies.get('token'))
-    
-            navigate("/admin")
+            navigate('/')
+            
             return
         }
         console.log('Credentials error')
@@ -49,27 +47,31 @@ function Signin(){
 
         <div className='signin'>
                 <h3>Enter your account details to enter</h3>
-            <p>
+            <p className='radio'>
                 <input onChange={(e)=>{setEmail(e.target.value)}} required name='email' type='email' placeholder='Enter your email'/>
             </p>
-            <p>
+            <p className='radiobutton'>
                 <input onChange={(e)=>{setPassword(e.target.value)}} required name='password' type='password' placeholder='Enter your password'/>
             </p>
-            <p>
-                <label for='role'>admin</label>
+            <p className='radiobutton'>
                 <input type='radio' onClick={(e)=>{setRole(e.target.value)}} name='role' value='admin'/>
-                <label for='role'>patient</label>
+                <label for='role'>admin</label>
+            </p>
+            <p className='radiobutton'>
                 <input type='radio' onClick={(e)=>{setRole(e.target.value)}} name='role' value='patient'/>
-                <label for='role'>doctor</label>
+                <label for='role'>patient</label>
+            </p>
+            <p className='radiobutton'>
                 <input type='radio' onClick={(e)=>{setRole(e.target.value)}} name='role' value='doctor'/>
+                <label for='role'>doctor</label>
             </p>
             <p>
                 <button onClick={handleClick}  className="colorful">Sign In</button>
             </p>
 
-            <Link to = {"/admin"}>
+            {/* <Link to = {"/admin"}>
                 <button  className="colorful">Admin</button>
-            </Link>
+            </Link> */}
             
             
         </div>

@@ -13,18 +13,33 @@ const addAppointment = (appointment, callback)=>{
                 })
 }
 
-const getAllAppointmentsOfDoctor = (id,callback)=>{
-    pool.query(`SELECT A.id, P.name as patient_name,P.surname as patient_surname, A.appointment_date, A.appointment_time_from, A.appointment_time_to,A.visited
+const getAllAppointmentsOfDoctor = (filter,callback)=>{
+    pool.query(`SELECT A.id, P.name as patient_name,P.surname as patient_surname, A.appointment_date, A.other,A.appointment_time_from, A.appointment_time_to,A.visited
         from appointment A
         inner join doctor D
         on D.id = A.doctor_id       
         inner join patient P 
         on P.id = A.patient_id
-        where D.id = $1
-        Order by A.appointment_date Desc
-     `,[id],(err,result)=>{
+        where 
+        (
+            ((
+                (lower(P.name) Like lower($2))
+            )
+            or
+            (
+                (lower(P.surname) Like lower($2))
+                
+            )
+            or
+                (lower(A.other) Like lower($4))
+            )
+             
+        AND (A.visited = $3 or ($3 is null))
+        AND D.id = $1
+        )
+     `,[filter.id,'%' + filter.name+ '%',filter.visited,'%' +filter.cause+'%'],(err,result)=>{
         if(err){
-            console.log("Get specializations", err)
+             console.log("Get patients filter", err)
             callback(true,err)
         }else if(result.rows.length === 0){
             callback(true, new Error("Not found"))
@@ -49,8 +64,9 @@ const markAppointmentVisited = (id,callback)=>{
 })
 }
 
-const getAllAppointmentsOfPatient = (id,callback)=>{
-    pool.query(`SELECT A.id, D.name as doctor_name,D.surname as doctor_surname, S.specialization_name, Dep.department_name, A.appointment_date, A.appointment_time_from, A.appointment_time_to,A.visited
+const getAllAppointmentsOfPatient = (id,visited,callback)=>{
+    console.log(id,visited)
+    pool.query(`SELECT A.id, D.name as doctor_name,D.surname as doctor_surname, S.specialization_name, Dep.department_name, A.appointment_date, A.appointment_time_from, A.appointment_time_to,A.visited,A.other
         from appointment A
         inner join doctor D
         on D.id = A.doctor_id
@@ -60,11 +76,11 @@ const getAllAppointmentsOfPatient = (id,callback)=>{
         on S.id = D.specialization_id       
         inner join patient P 
         on P.id = A.patient_id
-        where P.id = $1
+        where P.id = $1 AND A.visited=$2
         Order by A.appointment_date Desc
-     `,[id],(err,result)=>{
+     `,[id,visited],(err,result)=>{
         if(err){
-            console.log("Get specializations", err)
+            console.log("Get appointment of doctor", err)
             callback(true,err)
         }else if(result.rows.length === 0){
             callback(true, new Error("Not found"))
